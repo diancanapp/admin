@@ -7,8 +7,13 @@
  */
 export default {
   dev: {
+    '/admin/': {
+      target: 'https://diancan.wozaizhao.com',
+      changeOrigin: true,
+      pathRewrite: { '^': '' },
+    },
     '/api/': {
-      target: 'https://preview.pro.ant.design',
+      target: 'https://diancan.wozaizhao.com',
       changeOrigin: true,
       pathRewrite: { '^': '' },
     },
