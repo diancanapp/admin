@@ -39,12 +39,6 @@ const Model: LoginModelType = {
       });
       // Login successfully
       if (response.status === 'ok') {
-        console.log("login successfully")
-        try {
-          sessionStorage.setItem('token', response.data)
-        } catch(e) {
-          console.log('sessionStorage.setItem', e)
-        }
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
         let { redirect } = params as { redirect: string };

@@ -56,9 +56,13 @@ const Model: ModelType = {
         payload: response,
       });
       // Login successfully
-      console.log(response)
       if (response.success) {
         message.success('登录成功！');
+        try {
+          sessionStorage.setItem('token', response.data);
+        } catch (e) {
+          console.log('sessionStorage.setItem', e);
+        }
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
         let { redirect } = params as { redirect: string };
