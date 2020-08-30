@@ -70,6 +70,25 @@ export default defineConfig({
               redirect: '/dashboard/analysis',
             },
             {
+              path: '/goods',
+              name: 'goods',
+              icon: 'appstore',
+              routes: [
+                {
+                  name: 'category',
+                  icon: 'goods',
+                  path: '/goods/card-list',
+                  component: './goods/card-list',
+                },
+                {
+                  name: 'goods',
+                  icon: 'goods',
+                  path: '/goods/basic-list',
+                  component: './goods/basic-list',
+                },
+              ],
+            },
+            {
               path: '/dashboard',
               name: 'dashboard',
               icon: 'dashboard',
