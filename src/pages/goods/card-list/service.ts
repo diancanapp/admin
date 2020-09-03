@@ -1,7 +1,16 @@
-import request from 'umi-request';
+import request from '@/utils/request';
+import { CategoryDataType } from './data.d';
 
-export async function queryFakeList(params: { count: number }) {
-  return request('/api/fake_list', {
-    params,
+export async function addCategory(params: CategoryDataType) {
+  return request('/admin/category', {
+    method: 'POST',
+    data: params,
+  });
+}
+
+export async function queryCategory(params: CategoryDataType) {
+  return request('/api/categories', {
+    method: 'POST',
+    data: params,
   });
 }

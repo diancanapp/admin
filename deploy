@@ -1,0 +1,2 @@
+rm -rf /data/www/admin/
+mv dist/ /data/www/admin

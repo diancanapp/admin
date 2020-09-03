@@ -1,10 +1,10 @@
 import { Effect, Reducer } from 'umi';
 
-import { CardListItemDataType } from './data.d';
-import { queryFakeList } from './service';
+import { CategoryDataType } from './data.d';
+import { queryCategory, addCategory, updateCategory, removeCategory} from './service';
 
 export interface StateType {
-  list: CardListItemDataType[];
+  list: CategoryDataType[];
 }
 
 export interface ModelType {
@@ -27,10 +27,23 @@ const Model: ModelType = {
 
   effects: {
     *fetch({ payload }, { call, put }) {
-      const response = yield call(queryFakeList, payload);
+      const response = yield call(queryCategory, payload);
       yield put({
         type: 'queryList',
         payload: Array.isArray(response) ? response : [],
+      });
+    },
+    *submit({ payload }, { call, put }) {
+      let callback;
+      if (payload.id) {
+        callback = Object.keys(payload).length === 1 ? removeCategory : updateCategory;
+      } else {
+        callback = addCategory;
+      }
+      const response = yield call(callback, payload); // post
+      yield put({
+        type: 'queryList',
+        payload: response,
       });
     },
   },
