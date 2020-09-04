@@ -77,13 +77,13 @@ export default defineConfig({
                 {
                   name: 'category',
                   icon: 'goods',
-                  path: '/goods/card-list',
+                  path: '/goods/category',
                   component: './goods/card-list',
                 },
                 {
                   name: 'goods',
                   icon: 'goods',
-                  path: '/goods/basic-list',
+                  path: '/goods/goods',
                   component: './goods/basic-list',
                 },
               ],

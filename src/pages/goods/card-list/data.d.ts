@@ -1,11 +1,11 @@
 
 export interface CategoryDataType {
-  id: string;
+  ID: string;
   name: string;
   categoryDesc: string;
   categoryImg: string;
-  sortOrder: string;
-  isShow: number;
+  sortOrder: number;
+  isShow: bool;
   style: string;
-  isHot: number;
+  isHot: bool;
 }

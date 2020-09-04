@@ -12,6 +12,7 @@ export interface ModelType {
   state: StateType;
   effects: {
     fetch: Effect;
+    submit: Effect;
   };
   reducers: {
     queryList: Reducer<StateType>;
@@ -30,7 +31,7 @@ const Model: ModelType = {
       const response = yield call(queryCategory, payload);
       yield put({
         type: 'queryList',
-        payload: Array.isArray(response) ? response : [],
+        payload: Array.isArray(response.data) ? response.data : [],
       });
     },
     *submit({ payload }, { call, put }) {

@@ -8,7 +8,20 @@ export async function addCategory(params: CategoryDataType) {
   });
 }
 
-export async function queryCategory(params: CategoryDataType) {
+export async function queryCategory() {
+  return request('/api/categories', {
+    method: 'GET'
+  });
+}
+
+export async function updateCategory(params: CategoryDataType) {
+  return request('/api/categories', {
+    method: 'POST',
+    data: params,
+  });
+}
+
+export async function removeCategory(params: CategoryDataType) {
   return request('/api/categories', {
     method: 'POST',
     data: params,

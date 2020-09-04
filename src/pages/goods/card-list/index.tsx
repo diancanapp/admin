@@ -4,28 +4,29 @@ import React, { Component } from 'react';
 
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { connect, Dispatch } from 'umi';
+import OperationModal from './components/OperationModal';
 import { StateType } from './model';
-import { CardListItemDataType } from './data.d';
+import { CategoryDataType } from './data.d';
 import styles from './style.less';
 
 const { Paragraph } = Typography;
 
 interface CardListProps {
-  listAndcardList: StateType;
+  categoryList: StateType;
   dispatch: Dispatch;
   loading: boolean;
 }
 interface CardListState {
   visible: boolean;
   done: boolean;
-  current?: Partial<CardListItemDataType>;
+  current?: Partial<CategoryDataType>;
 }
 
 class CardList extends Component<CardListProps, CardListState> {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'listAndcardList/fetch',
+      type: 'categoryList/fetch',
       payload: {
         count: 8,
       },
@@ -34,7 +35,7 @@ class CardList extends Component<CardListProps, CardListState> {
 
   render() {
     const {
-      listAndcardList: { list },
+      categoryList: { list },
       loading,
     } = this.props;
 
@@ -69,71 +70,81 @@ class CardList extends Component<CardListProps, CardListState> {
         />
       </div>
     );
-    const nullData: Partial<CardListItemDataType> = {};
+    const nullData: Partial<CategoryDataType> = {};
     return (
-      <PageHeaderWrapper content={content} extraContent={extraContent}>
-        <div className={styles.cardList}>
-          <List<Partial<CardListItemDataType>>
-            rowKey="id"
-            loading={loading}
-            grid={{
-              gutter: 16,
-              xs: 1,
-              sm: 2,
-              md: 3,
-              lg: 3,
-              xl: 4,
-              xxl: 4,
-            }}
-            dataSource={[nullData, ...list]}
-            renderItem={(item) => {
-              if (item && item.id) {
+      <div>
+        <PageHeaderWrapper content={content} extraContent={extraContent}>
+          <div className={styles.cardList}>
+            <List<Partial<CategoryDataType>>
+              rowKey="ID"
+              loading={loading}
+              grid={{
+                gutter: 16,
+                xs: 1,
+                sm: 2,
+                md: 3,
+                lg: 3,
+                xl: 4,
+                xxl: 4,
+              }}
+              dataSource={[nullData, ...list]}
+              renderItem={(item) => {
+                if (item && item.ID) {
+                  return (
+                    <List.Item key={item.ID}>
+                      <Card
+                        hoverable
+                        className={styles.card}
+                        actions={[<a key="option1">修改</a>, <a key="option2">删除</a>]}
+                      >
+                        <Card.Meta
+                          avatar={<img alt="" className={styles.cardAvatar} src={item.categoryImg} />}
+                          title={<a>{item.name}</a>}
+                          description={
+                            <Paragraph className={styles.item} ellipsis={{ rows: 3 }}>
+                              {item.categoryDesc}
+                            </Paragraph>
+                          }
+                        />
+                      </Card>
+                    </List.Item>
+                  );
+                }
                 return (
-                  <List.Item key={item.id}>
-                    <Card
-                      hoverable
-                      className={styles.card}
-                      actions={[<a key="option1">操作一</a>, <a key="option2">操作二</a>]}
-                    >
-                      <Card.Meta
-                        avatar={<img alt="" className={styles.cardAvatar} src={item.avatar} />}
-                        title={<a>{item.title}</a>}
-                        description={
-                          <Paragraph className={styles.item} ellipsis={{ rows: 3 }}>
-                            {item.description}
-                          </Paragraph>
-                        }
-                      />
-                    </Card>
+                  <List.Item>
+                    <Button type="dashed" className={styles.newButton}>
+                      <PlusOutlined /> 新增商品分类
+                    </Button>
                   </List.Item>
                 );
-              }
-              return (
-                <List.Item>
-                  <Button type="dashed" className={styles.newButton}>
-                    <PlusOutlined /> 新增产品
-                  </Button>
-                </List.Item>
-              );
-            }}
-          />
-        </div>
-      </PageHeaderWrapper>
+              }}
+            />
+          </div>
+        </PageHeaderWrapper>
+        {/* <OperationModal
+          done={done}
+          current={current}
+          visible={visible}
+          onDone={handleDone}
+          onCancel={handleCancel}
+          onSubmit={handleSubmit}
+        /> */}
+      </div>
     );
   }
 }
 
 export default connect(
   ({
-    listAndcardList,
+    categoryList,
     loading,
   }: {
-    listAndcardList: StateType;
+    categoryList: StateType;
     loading: {
       models: { [key: string]: boolean };
     };
   }) => ({
-    listAndcardList,
-    loading: loading.models.listAndcardList,
+    categoryList,
+    loading: loading.models.categoryList,
   }),
 )(CardList);
