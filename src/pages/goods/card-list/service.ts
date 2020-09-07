@@ -15,15 +15,15 @@ export async function queryCategory() {
 }
 
 export async function updateCategory(params: CategoryDataType) {
-  return request('/api/categories', {
-    method: 'POST',
+  return request('/api/category', {
+    method: 'PUT',
     data: params,
   });
 }
 
 export async function removeCategory(params: CategoryDataType) {
-  return request('/api/categories', {
-    method: 'POST',
+  return request('/api/category', {
+    method: 'DELETE',
     data: params,
   });
 }

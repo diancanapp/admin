@@ -23,6 +23,16 @@ interface CardListState {
 }
 
 class CardList extends Component<CardListProps, CardListState> {
+
+  constructor(props: CardListProps) {
+    super(props);
+    this.state = {
+      visible: false,
+      done: false,
+      current: undefined,
+    };
+  }
+
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
@@ -30,6 +40,45 @@ class CardList extends Component<CardListProps, CardListState> {
       payload: {
         count: 8,
       },
+    });
+  }
+
+  showModal = () => {
+    this.setState({
+      visible: true,
+      current: undefined,
+    })
+  }
+
+  showEditModal = (item: CategoryDataType) => {
+    this.setState({
+      visible: true,
+      current: item,
+    })
+  }
+
+  handleDone = () => {
+    this.setState({
+      done: false,
+      visible: false,
+    });
+  }
+
+  handleCancel = () => {
+    this.setState({
+      visible: false,
+    });
+  }
+
+  handleSubmit = (values: CategoryDataType) => {
+    const { dispatch } = this.props;
+    const ID = this.state.current ? this.state.current.ID : '';
+    this.setState({
+      done: true,
+    });
+    dispatch({
+      type: 'categoryList/submit',
+      payload: { ...values, ID },
     });
   }
 
@@ -112,7 +161,7 @@ class CardList extends Component<CardListProps, CardListState> {
                 }
                 return (
                   <List.Item>
-                    <Button type="dashed" className={styles.newButton}>
+                    <Button type="dashed" className={styles.newButton} onClick={this.showModal}>
                       <PlusOutlined /> 新增商品分类
                     </Button>
                   </List.Item>
@@ -121,14 +170,14 @@ class CardList extends Component<CardListProps, CardListState> {
             />
           </div>
         </PageHeaderWrapper>
-        {/* <OperationModal
-          done={done}
-          current={current}
-          visible={visible}
-          onDone={handleDone}
-          onCancel={handleCancel}
-          onSubmit={handleSubmit}
-        /> */}
+        <OperationModal
+          done={this.state.done}
+          current={this.state.current}
+          visible={this.state.visible}
+          onDone={this.handleDone}
+          onCancel={this.handleCancel}
+          onSubmit={this.handleSubmit}
+        />
       </div>
     );
   }

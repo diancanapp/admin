@@ -36,15 +36,16 @@ const Model: ModelType = {
     },
     *submit({ payload }, { call, put }) {
       let callback;
-      if (payload.id) {
+      if (payload.ID) {
         callback = Object.keys(payload).length === 1 ? removeCategory : updateCategory;
       } else {
         callback = addCategory;
       }
       const response = yield call(callback, payload); // post
+      console.log(response)
       yield put({
         type: 'queryList',
-        payload: response,
+        payload: response.data,
       });
     },
   },
