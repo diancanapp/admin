@@ -1,5 +1,5 @@
 import React, { FC, useEffect } from 'react';
-import { Modal, Result, Button, Form, Input, Upload, Switch } from 'antd';
+import { Modal, Result, Button, Form, Input, Upload, Switch, InputNumber } from 'antd';
 import { CategoryDataType } from '../data.d';
 import styles from '../style.less';
 
@@ -65,19 +65,29 @@ const OperationModal: FC<OperationModalProps> = (props) => {
     }
   };
 
-  const onChange = () => {
-  
-  }
   const modalFooter = done
     ? { footer: null, onCancel: onDone }
     : { okText: '保存', cancelText: '取消', onOk: handleSubmit, onCancel };
 
   const getModalContent = () => {
     if (done) {
-      return (
+      const isEdit = !!current;
+      return isEdit ? (
         <Result
           status="success"
-          title="新增商品分类成功"
+          title="操作成功"
+          subTitle="编辑商品分类信息成功。"
+          extra={
+            <Button type="primary" onClick={onDone}>
+              知道了
+            </Button>
+          }
+          className={styles.formResult}
+        />
+      ) : (
+        <Result
+          status="success"
+          title="操作成功"
           subTitle="快去商品分类下添加商品吧。"
           extra={
             <Button type="primary" onClick={onDone}>
@@ -86,10 +96,10 @@ const OperationModal: FC<OperationModalProps> = (props) => {
           }
           className={styles.formResult}
         />
-      );
+      )
     }
     return (
-      <Form {...formLayout} form={form} onFinish={handleFinish}>
+      <Form initialValues={{ sortOrder: 50 }} {...formLayout} form={form} onFinish={handleFinish} >
         <Form.Item
           name="name"
           label="商品分类名称"
@@ -126,9 +136,9 @@ const OperationModal: FC<OperationModalProps> = (props) => {
         <Form.Item
           name="sortOrder"
           label="商品分类排序权重"
-          rules={[{ required: false}]}
+          rules={[{ type: "number", required: false}]}
         >
-          <Input placeholder="请输入" />
+          <InputNumber min={1} max={100} />
         </Form.Item>
         <Form.Item
           name="style"
@@ -143,7 +153,7 @@ const OperationModal: FC<OperationModalProps> = (props) => {
           valuePropName="checked"
           rules={[{ required: false}]}
         >
-          <Switch onChange={onChange} />
+          <Switch />
         </Form.Item>
         <Form.Item
           name="isHot"
@@ -151,7 +161,7 @@ const OperationModal: FC<OperationModalProps> = (props) => {
           valuePropName="checked"
           rules={[{ required: false}]}
         >
-          <Switch onChange={onChange} />
+          <Switch />
         </Form.Item>
       </Form>
     );

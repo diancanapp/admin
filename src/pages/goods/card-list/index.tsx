@@ -1,5 +1,5 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Card, List, Typography } from 'antd';
+import { Button, Card, List, Typography, Modal } from 'antd';
 import React, { Component } from 'react';
 
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
@@ -50,12 +50,30 @@ class CardList extends Component<CardListProps, CardListState> {
     })
   }
 
-  showEditModal = (item: CategoryDataType) => {
+  showEditModal = (item: Partial<CategoryDataType>) => {
     this.setState({
       visible: true,
       current: item,
     })
   }
+
+  deleteItem = (ID: string | undefined) => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'categoryList/submit',
+      payload: { ID },
+    });
+  };
+
+  toDelete = (currentItem: Partial<CategoryDataType>) => {
+      Modal.confirm({
+        title: '删除分类',
+        content: '确定删除该分类吗？',
+        okText: '确认',
+        cancelText: '取消',
+        onOk: () => this.deleteItem(currentItem.ID),
+      });
+  };
 
   handleDone = () => {
     this.setState({
@@ -144,7 +162,14 @@ class CardList extends Component<CardListProps, CardListState> {
                       <Card
                         hoverable
                         className={styles.card}
-                        actions={[<a key="option1">修改</a>, <a key="option2">删除</a>]}
+                        actions={[<a key="edit" onClick={(e) => {
+                          e.preventDefault();
+                          this.showEditModal(item);
+                        }}>修改</a>,
+                        <a key="remove" onClick={(e) => {
+                          e.preventDefault();
+                          this.toDelete(item);
+                        }}>删除</a>]}
                       >
                         <Card.Meta
                           avatar={<img alt="" className={styles.cardAvatar} src={item.categoryImg} />}

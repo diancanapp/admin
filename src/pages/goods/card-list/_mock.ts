@@ -25,7 +25,7 @@ function getCategories(req: Request, res: Response) {
   });
 }
 
-function postCategories(req: Request, res: Response) {
+function postCategory(req: Request, res: Response) {
   const { /* url = '', */ body } = req;
   // const params = getUrlParams(url);
   // const { method, id } = body;
@@ -33,7 +33,7 @@ function postCategories(req: Request, res: Response) {
   let result = categories || [];
   result.unshift({
     ...body,
-    ID: `${result.length}`,
+    ID: result.length + 1,
     createdAt: new Date().getTime(),
   });
   // switch (method) {
@@ -64,7 +64,42 @@ function postCategories(req: Request, res: Response) {
   });
 }
 
+
+function modifyCategory(req: Request, res: Response) {
+  const { /* url = '', */ body } = req;
+  // const params = getUrlParams(url);
+  const { ID } = body;
+  // const count = (params.count * 1) || 20;
+  let result = categories || [];
+  result.forEach((item, i) => {
+    if (item.ID === ID) {
+      result[i] = { ...item, ...body };
+    }
+  });
+
+  return res.json({
+    success: true,
+    data: result
+  });
+}
+
+function deleteCategory(req: Request, res: Response) {
+  const { /* url = '', */ body } = req;
+  // const params = getUrlParams(url);
+  const { ID } = body;
+  // const count = (params.count * 1) || 20;
+  let result = categories || [];
+  result = result.filter((item) => item.ID !== ID);
+
+  return res.json({
+    success: true,
+    data: result
+  });
+}
+
 export default {
   'GET  /api/categories': getCategories,
-  'POST  /admin/category': postCategories,
+  'POST  /admin/category': postCategory,
+  'PUT  /admin/category': modifyCategory,
+  'DELETE  /admin/category': deleteCategory,
 };
