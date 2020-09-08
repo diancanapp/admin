@@ -1,5 +1,7 @@
-import React, { FC, useEffect } from 'react';
-import { Modal, Result, Button, Form, Input, Upload, Switch, InputNumber } from 'antd';
+import React, { FC, useEffect, useState } from 'react';
+import { PlusOutlined, LoadingOutlined } from '@ant-design/icons';
+
+import { Modal, Result, Button, Form, Input, Upload, Switch, InputNumber, message } from 'antd';
 import { CategoryDataType } from '../data.d';
 import styles from '../style.less';
 
@@ -17,28 +19,38 @@ const formLayout = {
   wrapperCol: { span: 13 },
 };
 
-// function getBase64(img, callback) {
-//   const reader = new FileReader();
-//   reader.addEventListener('load', () => callback(reader.result));
-//   reader.readAsDataURL(img);
-// }
+function normFile(e) {
+  console.log('Upload event:', e);
+  if (Array.isArray(e)) {
+    return e;
+  }
+  return e && e.fileList;
+}
 
-// function beforeUpload(file) {
-//   const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-//   if (!isJpgOrPng) {
-//     message.error('You can only upload JPG/PNG file!');
-//   }
-//   const isLt2M = file.size / 1024 / 1024 < 2;
-//   if (!isLt2M) {
-//     message.error('Image must smaller than 2MB!');
-//   }
-//   return isJpgOrPng && isLt2M;
-// }
+function getBase64(img, callback) {
+  const reader = new FileReader();
+  reader.addEventListener('load', () => callback(reader.result));
+  reader.readAsDataURL(img);
+}
+
+function beforeUpload(file) {
+  const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+  if (!isJpgOrPng) {
+    message.error('You can only upload JPG/PNG file!');
+  }
+  const isLt2M = file.size / 1024 / 1024 < 2;
+  if (!isLt2M) {
+    message.error('Image must smaller than 2MB!');
+  }
+  return isJpgOrPng && isLt2M;
+}
 
 
 const OperationModal: FC<OperationModalProps> = (props) => {
   const [form] = Form.useForm();
   const { done, visible, current, onDone, onCancel, onSubmit } = props;
+  const [imageUrl, setImageUrl] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (form && !visible) {
@@ -62,6 +74,19 @@ const OperationModal: FC<OperationModalProps> = (props) => {
   const handleFinish = (values: { [key: string]: any }) => {
     if (onSubmit) {
       onSubmit(values as CategoryDataType);
+    }
+  };
+
+  const handleChange = (info: any) => {
+    if (info.file.status === 'uploading') {
+      setLoading(true);
+      return;
+    }
+    if (info.file.status === 'done') {
+      // Get this url from response in real world.
+      getBase64(info.file.originFileObj, (url: string) =>
+        setImageUrl(url)
+      );
     }
   };
 
@@ -98,6 +123,15 @@ const OperationModal: FC<OperationModalProps> = (props) => {
         />
       )
     }
+
+    const uploadButton = (
+      <div>
+        {loading ? <LoadingOutlined /> : <PlusOutlined />}
+        <div style={{ marginTop: 8 }}>上传图片</div>
+      </div>
+    );
+
+
     return (
       <Form initialValues={{ sortOrder: 50 }} {...formLayout} form={form} onFinish={handleFinish} >
         <Form.Item
@@ -114,25 +148,24 @@ const OperationModal: FC<OperationModalProps> = (props) => {
         >
           <Input placeholder="请输入" />
         </Form.Item>
-        {/* <Form.Item
+        <Form.Item
           name="categoryImg"
           label="商品分类图片"
           valuePropName="fileList"
           getValueFromEvent={normFile}
-          extra="longgggggggggggggggggggggggggggggggggg"
         >
           <Upload
             name="avatar"
             listType="picture-card"
             className="avatar-uploader"
             showUploadList={false}
-            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+            action="https://diancan.wozaizhao.com/api/upload"
             beforeUpload={beforeUpload}
-            onChange={this.handleChange}
+            onChange={handleChange}
           >
-            {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
+            {imageUrl ? <img src={imageUrl} alt="商品分类图片" style={{ width: '100%' }} /> : uploadButton}
           </Upload>
-        </Form.Item> */}
+        </Form.Item>
         <Form.Item
           name="sortOrder"
           label="商品分类排序权重"
