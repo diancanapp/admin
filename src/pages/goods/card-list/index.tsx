@@ -132,7 +132,7 @@ class CardList extends Component<CardListProps, CardListState> {
     const extraContent = (
       <div className={styles.extraImg}>
         <img
-          alt="这是一个标题"
+          alt="这是一个标题1"
           src="https://gw.alipayobjects.com/zos/rmsportal/RzwpdLnhmvDJToTdfDPe.png"
         />
       </div>
