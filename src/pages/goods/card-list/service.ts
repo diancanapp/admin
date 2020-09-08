@@ -15,14 +15,14 @@ export async function queryCategory() {
 }
 
 export async function updateCategory(params: CategoryDataType) {
-  return request('/admin/category', {
+  return request(`/admin/category/${params.ID}`, {
     method: 'PUT',
     data: params,
   });
 }
 
 export async function removeCategory(params: CategoryDataType) {
-  return request('/admin/category', {
+  return request(`/admin/category/${params.ID}`, {
     method: 'DELETE',
     data: params,
   });
