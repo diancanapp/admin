@@ -45,11 +45,10 @@ function beforeUpload(file: RcFile) {
   return isJpgOrPng && isLt2M;
 }
 
-
 const OperationModal: FC<OperationModalProps> = (props) => {
   const [form] = Form.useForm();
   const { done, visible, current, onDone, onCancel, onSubmit } = props;
-  const [imageUrl, setImageUrl] = useState<string>("");
+  const [imageUrl, setImageUrl] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -61,7 +60,7 @@ const OperationModal: FC<OperationModalProps> = (props) => {
   useEffect(() => {
     if (current) {
       form.setFieldsValue({
-        ...current
+        ...current,
       });
     }
   }, [props.current]);
@@ -84,9 +83,7 @@ const OperationModal: FC<OperationModalProps> = (props) => {
     }
     if (info.file.status === 'done') {
       // Get this url from response in real world.
-      getBase64(info.file.originFileObj, (url: string) =>
-        setImageUrl(url)
-      );
+      getBase64(info.file.originFileObj, (url: string) => setImageUrl(url));
     }
   };
 
@@ -121,7 +118,7 @@ const OperationModal: FC<OperationModalProps> = (props) => {
           }
           className={styles.formResult}
         />
-      )
+      );
     }
 
     const uploadButton = (
@@ -131,9 +128,8 @@ const OperationModal: FC<OperationModalProps> = (props) => {
       </div>
     );
 
-
     return (
-      <Form initialValues={{ sortOrder: 50 }} {...formLayout} form={form} onFinish={handleFinish} >
+      <Form initialValues={{ sortOrder: 50 }} {...formLayout} form={form} onFinish={handleFinish}>
         <Form.Item
           name="name"
           label="商品分类名称"
@@ -159,32 +155,32 @@ const OperationModal: FC<OperationModalProps> = (props) => {
             listType="picture-card"
             className="avatar-uploader"
             showUploadList={false}
-            action="https://diancan.wozaizhao.com/api/upload"
+            action="https://admin.wozaizhao.com/api/upload"
             beforeUpload={beforeUpload}
             onChange={handleChange}
           >
-            {imageUrl ? <img src={imageUrl} alt="商品分类图片" style={{ width: '100%' }} /> : uploadButton}
+            {imageUrl ? (
+              <img src={imageUrl} alt="商品分类图片" style={{ width: '100%' }} />
+            ) : (
+              uploadButton
+            )}
           </Upload>
         </Form.Item>
         <Form.Item
           name="sortOrder"
           label="商品分类排序权重"
-          rules={[{ type: "number", required: false}]}
+          rules={[{ type: 'number', required: false }]}
         >
           <InputNumber min={1} max={100} />
         </Form.Item>
-        <Form.Item
-          name="style"
-          label="商品分类名样式"
-          rules={[{ required: false}]}
-        >
+        <Form.Item name="style" label="商品分类名样式" rules={[{ required: false }]}>
           <Input placeholder="请输入" />
         </Form.Item>
         <Form.Item
           name="isShow"
           label="是否展示"
           valuePropName="checked"
-          rules={[{ required: false}]}
+          rules={[{ required: false }]}
         >
           <Switch />
         </Form.Item>
@@ -192,7 +188,7 @@ const OperationModal: FC<OperationModalProps> = (props) => {
           name="isHot"
           label="是否为热门"
           valuePropName="checked"
-          rules={[{ required: false}]}
+          rules={[{ required: false }]}
         >
           <Switch />
         </Form.Item>
