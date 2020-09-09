@@ -155,7 +155,7 @@ const OperationModal: FC<OperationModalProps> = (props) => {
           getValueFromEvent={normFile}
         >
           <Upload
-            name="avatar"
+            name="file"
             listType="picture-card"
             className="avatar-uploader"
             showUploadList={false}
