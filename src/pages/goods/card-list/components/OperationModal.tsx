@@ -20,14 +20,14 @@ const formLayout = {
   wrapperCol: { span: 13 },
 };
 
-function normFile(e) {
+function normFile(e: any) {
   if (Array.isArray(e)) {
     return e;
   }
   return e && e.fileList;
 }
 
-function getBase64(img, callback) {
+function getBase64(img: any, callback: (s: any) => void) {
   const reader = new FileReader();
   reader.addEventListener('load', () => callback(reader.result));
   reader.readAsDataURL(img);
