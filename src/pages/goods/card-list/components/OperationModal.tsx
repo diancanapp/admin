@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { PlusOutlined, LoadingOutlined } from '@ant-design/icons';
+import { RcFile, UploadChangeParam } from 'antd/lib/upload/interface';
 
 import { Modal, Result, Button, Form, Input, Upload, Switch, InputNumber, message } from 'antd';
 import { CategoryDataType } from '../data.d';
@@ -20,7 +21,6 @@ const formLayout = {
 };
 
 function normFile(e) {
-  console.log('Upload event:', e);
   if (Array.isArray(e)) {
     return e;
   }
@@ -33,7 +33,7 @@ function getBase64(img, callback) {
   reader.readAsDataURL(img);
 }
 
-function beforeUpload(file) {
+function beforeUpload(file: RcFile) {
   const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
   if (!isJpgOrPng) {
     message.error('You can only upload JPG/PNG file!');
@@ -77,7 +77,7 @@ const OperationModal: FC<OperationModalProps> = (props) => {
     }
   };
 
-  const handleChange = (info: any) => {
+  const handleChange = (info: UploadChangeParam) => {
     if (info.file.status === 'uploading') {
       setLoading(true);
       return;
