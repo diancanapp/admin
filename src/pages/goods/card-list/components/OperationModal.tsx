@@ -21,10 +21,10 @@ const formLayout = {
 };
 
 function normFile(e: any) {
-  if (Array.isArray(e)) {
-    return e;
+  if (e[0] && e[0].response.success){
+    return e[0].response.data
   }
-  return e && e.fileList;
+  return ''
 }
 
 function getBase64(img: any, callback: (s: any) => void) {
