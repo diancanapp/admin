@@ -42,10 +42,9 @@ const Model: ModelType = {
         callback = addCategory;
       }
       const response = yield call(callback, payload); // post
-      console.log(response)
       yield put({
         type: 'queryList',
-        payload: response.data,
+        payload:  Array.isArray(response.data) ? response.data : [],
       });
     },
   },
