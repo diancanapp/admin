@@ -21,11 +21,16 @@ const formLayout = {
 };
 
 function normFile(e: any) {
-  console.log(e)
-  if (e[0] && e[0].response.success){
-    return e[0].response.data
+  
+//   if (e[0] && e[0].response.success) {
+//     return e[0].response.data;
+//   }
+//   return '';
+console.log('Upload event:', e);
+  if (Array.isArray(e)) {
+    return e;
   }
-  return ''
+  return e && e.fileList;
 }
 
 function getBase64(img: any, callback: (s: any) => void) {
@@ -78,7 +83,7 @@ const OperationModal: FC<OperationModalProps> = (props) => {
   };
 
   const handleChange = (info: UploadChangeParam) => {
-    console.log(info)
+    console.log(info);
     if (info.file.status === 'uploading') {
       setLoading(true);
       return;
