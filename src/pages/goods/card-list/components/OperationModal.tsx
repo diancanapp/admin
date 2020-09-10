@@ -21,6 +21,7 @@ const formLayout = {
 };
 
 function normFile(e: any) {
+  console.log(e)
   if (e[0] && e[0].response.success){
     return e[0].response.data
   }
@@ -77,6 +78,7 @@ const OperationModal: FC<OperationModalProps> = (props) => {
   };
 
   const handleChange = (info: UploadChangeParam) => {
+    console.log(info)
     if (info.file.status === 'uploading') {
       setLoading(true);
       return;
