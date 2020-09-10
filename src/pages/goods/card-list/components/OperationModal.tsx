@@ -89,8 +89,10 @@ const OperationModal: FC<OperationModalProps> = (props) => {
       return;
     }
     if (info.file.status === 'done') {
+      const url = info.file.response.success ? `https://static.wozaizhao.com/${info.file.response.data}` : ''
+      setImageUrl(url)
       // Get this url from response in real world.
-      getBase64(info.file.originFileObj, (url: string) => setImageUrl(url));
+      // getBase64(info.file.originFileObj, (url: string) => setImageUrl(url));
     }
   };
 
