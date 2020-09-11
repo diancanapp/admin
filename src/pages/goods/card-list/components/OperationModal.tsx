@@ -167,6 +167,7 @@ const OperationModal: FC<OperationModalProps> = (props) => {
           name="categoryImg"
           label="商品分类图片"
           getValueProps={getValueProps}
+          valuePropName="fileList"
         >
           <Upload
             name="file"
