@@ -99,7 +99,9 @@ const OperationModal: FC<OperationModalProps> = (props) => {
   const getValueProps = (e) => {
     console.log('getValueProps', e)
     if (e && Array.isArray(e)) {
-      return e[0].response && e[0].response.data;
+      const url = e[0].response && e[0].response.data;
+      console.log(url)
+      return url
     }
     return '';
   }
