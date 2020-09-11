@@ -97,8 +97,10 @@ const OperationModal: FC<OperationModalProps> = (props) => {
   };
 
   const getValueProps = (e) => {
-    console.log(e)
-    return e[0].response.data
+    if (e && Array.isArray(e)) {
+      return e[0].response && e[0].response.data;
+    }
+    return '';
   }
 
   const modalFooter = done
