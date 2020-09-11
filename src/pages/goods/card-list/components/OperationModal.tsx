@@ -156,7 +156,7 @@ const OperationModal: FC<OperationModalProps> = (props) => {
         <Form.Item
           name="categoryImg"
           label="商品分类图片"
-          valuePropName="fileList"
+          valuePropName="fileList[0].response.data"
           getValueFromEvent={normFile}
         >
           <Upload
