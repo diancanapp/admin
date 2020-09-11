@@ -96,6 +96,11 @@ const OperationModal: FC<OperationModalProps> = (props) => {
     }
   };
 
+  const getValueProps = (e) => {
+    console.log(e)
+    return e[0].response.data
+  }
+
   const modalFooter = done
     ? { footer: null, onCancel: onDone }
     : { okText: '保存', cancelText: '取消', onOk: handleSubmit, onCancel };
@@ -156,7 +161,7 @@ const OperationModal: FC<OperationModalProps> = (props) => {
         <Form.Item
           name="categoryImg"
           label="商品分类图片"
-          valuePropName="fileList[0].response.data"
+          getValueProps={getValueProps}
           getValueFromEvent={normFile}
         >
           <Upload
