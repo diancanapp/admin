@@ -172,7 +172,7 @@ class CardList extends Component<CardListProps, CardListState> {
                         }}>删除</a>]}
                       >
                         <Card.Meta
-                          avatar={<img alt="" className={styles.cardAvatar} src={item.categoryImg} />}
+                          avatar={<img alt="" className={styles.cardAvatar} src={`https://static.wozaizhao.com/${item.categoryImg}`} />}
                           title={<a>{item.name}</a>}
                           description={
                             <Paragraph className={styles.item} ellipsis={{ rows: 3 }}>

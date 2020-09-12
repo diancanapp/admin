@@ -21,17 +21,16 @@ const formLayout = {
 };
 
 function normFile(e: any) {
-  
-//   if (e[0] && e[0].response.success) {
-//     return e[0].response.data;
-//   }
-//   return '';
-console.log('Upload event:', e);
+  console.log('normfile', e)
   if (Array.isArray(e)) {
     return e;
   }
-  return e && e.fileList;
+  return e && e.fileList && e.fileList[0] && e.fileList[0].response && e.fileList[0].response.data;
 }
+
+const headers = {
+  'X-Requested-With':null
+ }
 
 function getBase64(img: any, callback: (s: any) => void) {
   const reader = new FileReader();
@@ -54,7 +53,7 @@ function beforeUpload(file: RcFile) {
 const OperationModal: FC<OperationModalProps> = (props) => {
   const [form] = Form.useForm();
   const { done, visible, current, onDone, onCancel, onSubmit } = props;
-  const [imageUrl, setImageUrl] = useState<string>('');
+  const [imageUrl, setImageUrl] = useState<string>('http');
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -89,7 +88,7 @@ const OperationModal: FC<OperationModalProps> = (props) => {
       return;
     }
     if (info.file.status === 'done') {
-      const url = info.file.response.success ? `https://static.wozaizhao.com/${info.file.response.data}` : ''
+      const url = info.file.response.success ? `${info.file.response.data}` : ''
       setImageUrl(url)
       // Get this url from response in real world.
       // getBase64(info.file.originFileObj, (url: string) => setImageUrl(url));
@@ -98,9 +97,12 @@ const OperationModal: FC<OperationModalProps> = (props) => {
 
   const getValueProps = (e) => {
     console.log('getValueProps', e)
+    setImageUrl(e)
+
     if (e && Array.isArray(e)) {
       const url = e[0].response && e[0].response.data;
       console.log(url)
+      setImageUrl(url)
       return url
     }
     return '';
@@ -166,6 +168,8 @@ const OperationModal: FC<OperationModalProps> = (props) => {
         <Form.Item
           name="categoryImg"
           label="商品分类图片"
+          // valuePropName="fileList"
+          getValueProps={getValueProps}
           getValueFromEvent={normFile}
         >
           <Upload
@@ -173,12 +177,13 @@ const OperationModal: FC<OperationModalProps> = (props) => {
             listType="picture-card"
             className="avatar-uploader"
             showUploadList={false}
+            headers={headers}
             action="https://admin.wozaizhao.com/api/upload"
             beforeUpload={beforeUpload}
             onChange={handleChange}
           >
             {imageUrl ? (
-              <img src={imageUrl} alt="商品分类图片" style={{ width: '100%' }} />
+              <img src={`https://static.wozaizhao.com/${imageUrl}`} alt="商品分类图片" style={{ width: '100%' }} />
             ) : (
               uploadButton
             )}
